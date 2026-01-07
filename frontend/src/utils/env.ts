@@ -8,4 +8,5 @@ export const getEnv = (key: string, defaultValue?: string): string => {
   return value || ''
 }
 
-export const API_URL = getEnv('VITE_API_URL', 'http://localhost:3000')
+export const API_URL = import.meta.env.VITE_API_URL
+

@@ -6,16 +6,30 @@ type Form = { email: string; password: string }
 
 export default function Login() {
   const { register, handleSubmit } = useForm<Form>()
+const onSubmit = async (data: Form) => {
+  try {
+    const res = await api.post('/auth/login', data)
 
-  const onSubmit = async (data: Form) => {
-    try {
-      const res = await api.post('/auth/login', data)
-      localStorage.setItem('token', res.data.accessToken)
-      alert('Logged in')
-    } catch (err) {
-      alert('Login failed')
+    const token =
+      res.data?.accessToken ??
+      res.data?.access_token ??
+      res.data?.token
+
+    if (!token) {
+      console.log("LOGIN RESPONSE:", res.data)
+      alert("Giriş başarılı ama token alanı bulunamadı. Console'a bak.")
+      return
     }
+
+    localStorage.setItem('token', token)
+    alert('Logged in')
+    window.location.href = '/'
+  } catch (err) {
+    console.log("LOGIN ERROR:", err)
+    alert('Login failed')
   }
+}
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

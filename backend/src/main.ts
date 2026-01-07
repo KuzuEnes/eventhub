@@ -13,7 +13,13 @@ async function bootstrap() {
     ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
     : ['http://localhost:5173'];
   
-  app.enableCors({ origin: corsOrigin });
+  app.enableCors({
+  origin: corsOrigin,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  });
+
+
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.useGlobalFilters(new PrismaClientExceptionFilter());
 
