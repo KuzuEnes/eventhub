@@ -1,22 +1,13 @@
 import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Container,
-  Paper,
-  TextField,
-  Button,
-  Typography,
-  Box,
-  CircularProgress,
-} from '@mui/material'
 import { useSnackbar } from 'notistack'
 import { useAuth } from '../auth/useAuth'
 import { registerSchema, RegisterFormData } from '../auth/schemas'
+import styles from './Login.module.css'
 
 export default function RegisterPage() {
-  const navigate = useNavigate()
   const { enqueueSnackbar } = useSnackbar()
   const { register: registerAuth } = useAuth()
   const [loading, setLoading] = useState(false)
@@ -52,76 +43,91 @@ export default function RegisterPage() {
   }
 
   return (
-    <Container maxWidth="sm">
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100vh',
-        }}
-      >
-        <Paper elevation={3} sx={{ padding: 4, width: '100%' }}>
-          <Typography variant="h4" sx={{ mb: 3, textAlign: 'center' }}>
-            Kaydol
-          </Typography>
+    <div className={styles.authPage}>
+      <div className={styles.authCard}>
+        {/* Left Panel - Illustration */}
+        <div className={styles.leftPanel}>
+          <img
+            src="https://cdni.iconscout.com/illustration/premium/thumb/sign-up-page-1886582-1598253.png"
+            alt="Register Illustration"
+            className={styles.illustration}
+          />
+        </div>
+
+        {/* Right Panel - Form */}
+        <div className={styles.rightPanel}>
+          <div className={styles.formHeader}>
+            <h1 className={styles.formTitle}>Create Account</h1>
+            <p className={styles.formSubtitle}>Sign up to get started</p>
+          </div>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <TextField
-              fullWidth
-              label="Email"
-              type="email"
-              margin="normal"
-              {...register('email')}
-              error={!!errors.email}
-              helperText={errors.email?.message}
-              disabled={loading}
-            />
+            <div className={styles.formGroup}>
+              <label htmlFor="email" className={styles.formLabel}>
+                Email Address
+              </label>
+              <input
+                id="email"
+                type="email"
+                className={`${styles.formInput} ${errors.email ? styles.error : ''}`}
+                placeholder="Enter your email"
+                disabled={loading}
+                {...register('email')}
+              />
+              {errors.email && (
+                <span className={styles.errorText}>{errors.email.message}</span>
+              )}
+            </div>
 
-            <TextField
-              fullWidth
-              label="Şifre"
-              type="password"
-              margin="normal"
-              {...register('password')}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-              disabled={loading}
-            />
+            <div className={styles.formGroup}>
+              <label htmlFor="password" className={styles.formLabel}>
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                className={`${styles.formInput} ${errors.password ? styles.error : ''}`}
+                placeholder="Enter your password"
+                disabled={loading}
+                {...register('password')}
+              />
+              {errors.password && (
+                <span className={styles.errorText}>{errors.password.message}</span>
+              )}
+            </div>
 
-            <TextField
-              fullWidth
-              label="Şifreyi Tekrarla"
-              type="password"
-              margin="normal"
-              {...register('confirmPassword')}
-              error={!!errors.confirmPassword}
-              helperText={errors.confirmPassword?.message}
-              disabled={loading}
-            />
+            <div className={styles.formGroup}>
+              <label htmlFor="confirmPassword" className={styles.formLabel}>
+                Confirm Password
+              </label>
+              <input
+                id="confirmPassword"
+                type="password"
+                className={`${styles.formInput} ${errors.confirmPassword ? styles.error : ''}`}
+                placeholder="Confirm your password"
+                disabled={loading}
+                {...register('confirmPassword')}
+              />
+              {errors.confirmPassword && (
+                <span className={styles.errorText}>{errors.confirmPassword.message}</span>
+              )}
+            </div>
 
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              sx={{ mt: 3, mb: 2 }}
+            <button
               type="submit"
+              className={styles.loginButton}
               disabled={loading}
             >
-              {loading ? <CircularProgress size={24} /> : 'Kaydol'}
-            </Button>
+              {loading ? <span className={styles.loader}></span> : 'SIGN UP'}
+            </button>
           </form>
 
-          <Box sx={{ textAlign: 'center', mt: 2 }}>
-            <Typography variant="body2">
-              Hesabınız var mı?{' '}
-              <Link to="/login" style={{ color: '#1976d2' }}>
-                Giriş Yap
-              </Link>
-            </Typography>
-          </Box>
-        </Paper>
-      </Box>
-    </Container>
+          <div className={styles.registerLink}>
+            Hesabınız var mı?
+            <Link to="/login">Giriş Yap</Link>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

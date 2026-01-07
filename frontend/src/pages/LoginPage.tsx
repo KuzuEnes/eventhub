@@ -37,8 +37,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className={styles.loginPage}>
-      <div className={styles.loginCard}>
+    <div className={styles.authPage}>
+      <div className={styles.authCard}>
         {/* Left Panel - Illustration */}
         <div className={styles.leftPanel}>
           <img
